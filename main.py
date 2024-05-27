@@ -15,7 +15,8 @@ from llm_axe import OllamaChat, OnlineAgent, FunctionCaller, make_prompt
 # Insert the websites that you want to monitor. For each website make a prompt indicating what you want to do with 
 # that information.
 websites_to_monitor = {
-    'https://www.worldometers.info/': 'Return the current world population value.'
+    'https://www.worldometers.info/': 'What is the current world population?',
+    'https://cinemex.com/': 'What movies can i see today?'
 }
 
 
@@ -43,10 +44,12 @@ def main():
     # function_caller = FunctionCaller(llm, functions=[get_information])
 
     chat_history = []
-    agent_response = online_agent.search(websites_to_monitor.get('https://www.worldometers.info/'))
-    print(agent_response)
-    chat_history.append(agent_response)
-    # chat_history.append(online_agent.search(websites_to_monitor.get('https://www.worldometers.info/')))
+    for key, value in websites_to_monitor.items():
+        print("Currently monitoring website: " + key)
+        agent_response = online_agent.search(value + ' Use the information form this website: ' + key)
+        print(agent_response)
+        chat_history.append(agent_response)
+        # chat_history.append(online_agent.search(websites_to_monitor.get('https://www.worldometers.info/')))
 
 
 if __name__ == '__main__':
