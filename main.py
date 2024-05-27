@@ -10,17 +10,47 @@
 # import pandas as pd
 # import schedule
 # import time
-#
-# website_urls = [
-#     #'http://150.100.216.64:8080/scheduling/ajF?filtro=BC-MXCNHDIA-T02',
-#     # 'http://150.100.216.64:8080/scheduling/ajF?filtro=BC-MXGKHDIA-T02'
-#     'https://www.worldometers.info/'
-# ]
-#
-# website_url = "http://150.100.216.64:8080/scheduling/ajF?filtro=BC-MXCNHDIA-T02"
-# website_url2 = "http://150.100.216.64:8080/scheduling/ajF?filtro=BC-MXGKHDIA-T02"
-#
-#
+from llm_axe import OllamaChat, OnlineAgent, FunctionCaller, make_prompt
+
+# Insert the websites that you want to monitor. For each website make a prompt indicating what you want to do with 
+# that information.
+websites_to_monitor = {
+    'https://www.worldometers.info/': 'Return the current world population value.'
+}
+
+
+def get_information():
+    """
+    Choose if there is information on the website.
+    """
+    return ""
+
+
+def main():
+    print(
+        '''
+        ----------------------------------------------------------------
+        Welcome to SMART-AI! A little bot to help monitor all your important sites.
+        Every 5 minutes the bot will search the indicated website for the information you programmed in your prompts.
+        Type 'exit' to exit the program.
+        ----------------------------------------------------------------
+        '''
+    )
+    # Determine what large language model you want to use to monitor
+    llm = OllamaChat(model="llama3:latest")
+    # Declare what agents we need
+    online_agent = OnlineAgent(llm)
+    # function_caller = FunctionCaller(llm, functions=[get_information])
+
+    chat_history = []
+    agent_response = online_agent.search(websites_to_monitor.get('https://www.worldometers.info/'))
+    print(agent_response)
+    chat_history.append(agent_response)
+    # chat_history.append(online_agent.search(websites_to_monitor.get('https://www.worldometers.info/')))
+
+
+if __name__ == '__main__':
+    main()
 # def scrape_website(url):
 #     """This function will scrape a website indicated by the input URL.
 #
@@ -130,6 +160,3 @@
 #
 # if __name__ == '__main__':
 #     app.run(debug=True)
-
-from llm_axe import OnlineAgent, Pdfreader, OllamaChat
-LLM = OllamaChat
